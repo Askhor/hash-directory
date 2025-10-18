@@ -52,6 +52,21 @@ class DirectoryHasher:
         self._hashes[str(path)] = the_hash
         return the_hash
 
+    def hash_overview(self, path: Path, _relative_to=None, _recursion_depth=0):
+        path = Path(path)
+
+        if _relative_to is None:
+            _relative_to = path
+
+        if path.is_file():
+            return f"{path.relative_to(_relative_to)} \t{self.hash(path)}\n"
+        else:
+            output = ""
+            for file in sorted(path.iterdir(), key=lambda p: p.name):
+                output += self.hash_overview(file, _relative_to=_relative_to,
+                                             _recursion_depth=_recursion_depth + 1)
+            return output
+
 
 def command_entry_point():
     try:
@@ -68,6 +83,9 @@ def main():
     parser.add_argument('-v', '--verbose', action='store_true', help="Show more output")
     parser.add_argument("--version", action="store_true", help="Show the current version of the program")
 
+    parser.add_argument("-o", "--overview", action="store_true", help="Show an overview of all hashes in directory")
+    parser.add_argument("PATH", help="The directory to hash")
+
     args = parser.parse_args()
 
     log.setLevel(logging.DEBUG if args.verbose else logging.INFO)
@@ -76,3 +94,8 @@ def main():
     if args.version:
         log.info(f"{PROGRAM_NAME} version {program_version}")
         return
+
+    if args.overview:
+        print(DirectoryHasher().hash_overview(args.PATH))
+    else:
+        print(hash_directory(args.PATH))
