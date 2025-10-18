@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hash-directory"
+version = "2025.10.3" # version
+authors = [
+    { name = "Guenthner", email = "guenthner.jonathan@gmail.com" },
+]
+description = ""
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+#dependencies = []
+keywords = []
+
+[project.scripts]
+hash-directory = "hash_directory:command_entry_point"

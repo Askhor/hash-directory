@@ -1,0 +1,3 @@
+import hash_directory
+
+hash_directory.command_entry_point()
