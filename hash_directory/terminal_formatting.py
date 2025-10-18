@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import sys
 
 _right_padding = 20
 color_ctrl_re = re.compile("ℂ([0-9]*)\\.")
@@ -53,9 +54,9 @@ def parse_color(string: str) -> str:
 def print_temp(string):
     """Print a temporary string to the console"""
     hide_temp()
-    print(_trim_to_terminal_width(string), end="", flush=True)
+    print(_trim_to_terminal_width(string), file=sys.stderr, end="", flush=True)
 
 
 def hide_temp():
     """Remove the current temporary string from the console"""
-    print("\x1b[1G\x1b[2K", end="", flush=True)
+    print("\x1b[1G\x1b[2K", end="", flush=True, file=sys.stderr)
