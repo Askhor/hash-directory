@@ -190,7 +190,7 @@ def command_entry_point():
 
 def main():
     parser = argparse.ArgumentParser(prog=PROGRAM_NAME,
-                                     description="",
+                                     description="A command line program (and python library) for hashing directories. Can also do hash-based comparisons between directories (like diff -qr).",
                                      allow_abbrev=True, add_help=True, exit_on_error=True)
 
     parser.add_argument('-v', '--verbose', action='store_true', help="Show more output")
