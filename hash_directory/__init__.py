@@ -41,6 +41,7 @@ class DirectoryHasher:
         return the_hash.hexdigest()
 
     def hash(self, path: Path):
+        log.debug(f"Generating hash for {path}")
         path = Path(path)
         path = path.resolve(strict=True)
 
