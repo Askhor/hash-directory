@@ -35,21 +35,21 @@ class DirectoryHasher:
         the_hash = self._hash_function()
 
         for file in sorted(path.iterdir(), key=lambda p: p.name):
-            the_hash.update(file.name)
-            the_hash.update(self.hash(file))
+            the_hash.update(file.name.encode("utf-8"))
+            the_hash.update(self.hash(file).encode("utf-8"))
 
         return the_hash.hexdigest()
 
     def hash(self, path: Path):
+        path = Path(path)
         path = path.resolve(strict=True)
-        the_hash = None
 
         if path.is_file():
             the_hash = self._hash_file(path)
         else:
             the_hash = self._hash_dir(path)
 
-        hashes[str(path)] = the_hash
+        self._hashes[str(path)] = the_hash
         return the_hash
 
 
