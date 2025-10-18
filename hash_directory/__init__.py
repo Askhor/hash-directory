@@ -3,6 +3,7 @@ import hashlib
 import logging
 import os
 import re
+import sys
 from pathlib import Path
 from typing import DefaultDict
 
@@ -28,7 +29,8 @@ def hash_directory(path: Path, hash_function=hashlib.sha256):
 
 
 def compare_directories(a: Path, b: Path, hash_function=hashlib.sha256):
-    a = Path(a)
+    if not isinstance(a, _OverviewWrapper):
+        a = Path(a)
     if not isinstance(b, _OverviewWrapper):
         b = Path(b)
     log.debug(f"Comparing {a} to {b}")
@@ -155,7 +157,6 @@ class DirectoryHasher:
         if _relative_to is None:
             _relative_to = path
 
-        print_temp(f"Hashing {path}")
         relative_path = str(path.relative_to(_relative_to))
         encoded_path = relative_path.replace("\\", "\\\\").replace(" ", "\\ ")
         output = f"{encoded_path} \t{self.hash(path)}\n"
@@ -166,6 +167,18 @@ class DirectoryHasher:
                                              _recursion_depth=_recursion_depth + 1)
 
         return output
+
+
+def _parse_if_necessary(path: Path):
+    path = Path(path)
+
+    if not path.exists():
+        log.error(f"File {path} does not exist")
+        sys.exit(1)
+    if path.is_file():
+        return _parse_overview(str(path), path.read_text())
+    else:
+        return path
 
 
 def command_entry_point():
@@ -197,13 +210,7 @@ def main():
         return
 
     if args.compare is not None:
-        if not Path(args.compare).exists():
-            log.error("File {args.compare} does not exist")
-            return
-        if Path(args.compare).is_file():
-            compare_directories(args.PATH, _parse_overview(args.compare, Path(args.compare).read_text()))
-        else:
-            compare_directories(args.PATH, args.compare)
+        compare_directories(_parse_if_necessary(args.PATH), _parse_if_necessary(args.compare))
     elif args.overview:
         print(DirectoryHasher().hash_overview(args.PATH))
     else:

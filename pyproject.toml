@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hash-directory"
-version = "2025.10.10" # version
+version = "2025.10.13" # version
 authors = [
     { name = "Guenthner", email = "guenthner.jonathan@gmail.com" },
 ]
