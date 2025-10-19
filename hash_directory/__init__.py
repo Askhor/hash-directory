@@ -64,8 +64,8 @@ def compare_directories(a: Path, b: Path, hash_function=hashlib.sha256):
             if hash_a != hash_b:
                 print(f"Files differ at {sub_path}:\n{hash_a}\n{hash_b}")
 
-        for filename in filenames(sub_path):
-            compare_at(sub_path / filename)
+            for filename in filenames(sub_path):
+                compare_at(sub_path / filename)
 
     compare_at(Path(os.curdir))
 
