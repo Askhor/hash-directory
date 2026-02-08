@@ -58,6 +58,6 @@ def main() -> None:
         ctx = _parse_context(args.PATH)
         assert isinstance(ctx, _DirectoryContext)
 
-        print(ctx.hash_overview(args.PATH))
+        print(ctx.hash_overview())
     else:
         print(hash_directory(args.PATH))

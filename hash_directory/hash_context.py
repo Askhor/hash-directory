@@ -1,6 +1,7 @@
 import abc
 import hashlib
 import logging
+import os
 import re
 import sys
 from abc import abstractmethod
@@ -84,18 +85,15 @@ class _DirectoryContext(_HashContext):
 
         return the_hash.hexdigest()
 
-    def hash_overview(self, path: Path, _relative_to=None, _recursion_depth=0) -> str:
-        if _relative_to is None:
-            _relative_to = path
+    def hash_overview(self, path: Path=Path(os.curdir), _recursion_depth=0) -> str:
+        assert not path.is_absolute()
+        assert self.exists(path)
 
-        relative_path = str(path.relative_to(_relative_to))
-        encoded_path = relative_path.replace("\\", "\\\\").replace(" ", "\\ ")
+        encoded_path = str(path).replace("\\", "\\\\").replace(" ", "\\ ")
         output = f"{encoded_path} \t{self.hash(path)}\n"
 
-        if path.is_dir():
-            for file in sorted(path.iterdir(), key=lambda p: p.name):
-                output += self.hash_overview(file, _relative_to=_relative_to,
-                                             _recursion_depth=_recursion_depth + 1)
+        for filename in self.filenames(path):
+            output += self.hash_overview(path / filename, _recursion_depth + 1)
 
         return output
 
