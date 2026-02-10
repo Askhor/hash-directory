@@ -1,9 +1,12 @@
+# PYTHON_ARGCOMPLETE_OK
+
 import argparse
 import logging
 from logging import Logger, StreamHandler
 from pathlib import Path
 from typing import TextIO
 
+import argcomplete
 import colorama
 from colorama import Fore
 
@@ -47,6 +50,7 @@ def main() -> None:
     parser.add_argument("PATH", type=Path, help=f"The directory to hash "
                                                 f"or path to a file containing output of {PROGRAM_NAME} -o")
 
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
     log.setLevel(logging.DEBUG if args.verbose else logging.INFO)

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hash-directory"
-version = "2026.2.3" # version
+version = "2026.2.4" # version
 authors = [
     { name = "Guenthner", email = "guenthner.jonathan@gmail.com" },
 ]
@@ -16,7 +16,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
-dependencies = ["temp_text", "colorama"]
+dependencies = ["temp_text", "colorama", "argcomplete"]
 keywords = []
 
 [project.scripts]
